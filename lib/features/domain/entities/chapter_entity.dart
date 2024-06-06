@@ -1,9 +1,11 @@
+import 'package:holybible/features/domain/entities/verse_entity.dart';
+
 class ChapterEntity {
-  String verseContent;
-  int verse;
+  final int chapter;
+  final List<VerseEntity> verses;
 
   ChapterEntity({
-    required this.verseContent,
-    required this.verse,
+    required this.chapter,
+    required this.verses,
   });
 }
