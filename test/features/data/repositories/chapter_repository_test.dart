@@ -48,25 +48,28 @@ void main() {
     ],
   );
 
-  test("should return a model when calls the data source", () async {
-    //arrange
-    when(() => dataSource.getChapter()).thenAnswer((_) async => tChapterModel);
+  group("verify get chapter requisition", () {
+    test("should return a model when calls the data source", () async {
+      //arrange
+      when(() => dataSource.getChapter())
+          .thenAnswer((_) async => tChapterModel);
 
-    //act
-    final response = await repository.getChapter();
-    //assert
-    expect(response, Right(tChapterModel));
-    verify(() => dataSource.getChapter()).called(1);
-  });
+      //act
+      final response = await repository.getChapter();
+      //assert
+      expect(response, Right(tChapterModel));
+      verify(() => dataSource.getChapter()).called(1);
+    });
 
-  test("should return a error when calls the data source", () async {
-    //arrange
-    when(() => dataSource.getChapter()).thenThrow(ServerException());
+    test("should return a error when calls the data source", () async {
+      //arrange
+      when(() => dataSource.getChapter()).thenThrow(ServerException());
 
-    //act
-    final response = await repository.getChapter();
-    //assert
-    expect(response, equals(Left<Failure, ChapterEntity>(FailureTest())));
-    verify(() => dataSource.getChapter()).called(1);
+      //act
+      final response = await repository.getChapter();
+      //assert
+      expect(response, equals(Left<Failure, ChapterEntity>(FailureTest())));
+      verify(() => dataSource.getChapter()).called(1);
+    });
   });
 }

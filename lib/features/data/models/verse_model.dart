@@ -6,7 +6,7 @@ class VerseModel extends VerseEntity {
   // Empty user witch represents an unauthenticaded user
   static final empty = VerseModel(verse: -1, verseContent: '');
 
-  //modify userModel parameters
+  ///modify VerseModel parameters
   VerseModel copyWith({required int? verse, required String? verseContent}) {
     return VerseModel(
       verse: verse ?? this.verse,
@@ -21,8 +21,9 @@ class VerseModel extends VerseEntity {
     );
   }
 
-  // Convenience getter to determine whether the current user is empty
+  /// Convenience getter to determine whether the current verse is empty
   bool get isEmpty => this == VerseModel.empty;
-  // Convenience getter to determine whether the current user is not empty
+
+  /// Convenience getter to determine whether the current is verse not empty
   bool get isNotEmpty => this != VerseModel.empty;
 }

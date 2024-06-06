@@ -49,13 +49,15 @@ void main() {
 
   final tNoParams = NoParams();
 
-  test('should get chapter from book', () async {
-    when(() => repository.getChapter())
-        .thenAnswer((_) async => Right(tChapterEntity));
+  group("verify get chapter domain", () {
+    test('should get chapter from book', () async {
+      when(() => repository.getChapter())
+          .thenAnswer((_) async => Right(tChapterEntity));
 
-    final response = await usecase(tNoParams);
+      final response = await usecase(tNoParams);
 
-    expect(response, Right(tChapterEntity));
-    verify(() => repository.getChapter()).called(1);
+      expect(response, Right(tChapterEntity));
+      verify(() => repository.getChapter()).called(1);
+    });
   });
 }
