@@ -19,11 +19,11 @@ jobs:
       with:
         flutter-version: '3.19.5'
 
-    - name: Install dependencies
-      run: flutter pub get
-
     - name: Setup .env
       run: echo "APIKEY=${{ secrets.APIKEY }}" > .env
+
+    - name: Install dependencies
+      run: flutter pub get
 
     - name: Run tests
       run: flutter test
