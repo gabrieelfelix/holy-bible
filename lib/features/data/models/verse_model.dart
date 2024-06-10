@@ -1,10 +1,10 @@
 import 'package:holybible/features/domain/entities/verse_entity.dart';
 
 class VerseModel extends VerseEntity {
-  VerseModel({required super.verse, required super.verseContent});
+  const VerseModel({required super.verse, required super.verseContent});
 
   // Empty user witch represents an unauthenticaded user
-  static final empty = VerseModel(verse: -1, verseContent: '');
+  static const empty = VerseModel(verse: -1, verseContent: '');
 
   ///modify VerseModel parameters
   VerseModel copyWith({required int? verse, required String? verseContent}) {
@@ -16,7 +16,7 @@ class VerseModel extends VerseEntity {
 
   factory VerseModel.fromJson(Map<String, dynamic> json) {
     return VerseModel(
-      verse: int.parse(json['number']),
+      verse: json['number'],
       verseContent: json['text'],
     );
   }
@@ -26,4 +26,7 @@ class VerseModel extends VerseEntity {
 
   /// Convenience getter to determine whether the current is verse not empty
   bool get isNotEmpty => this != VerseModel.empty;
+
+  @override
+  List<Object> get props => [verse, verseContent];
 }

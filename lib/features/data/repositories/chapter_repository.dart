@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:holybible/core/error/exception.dart';
 import 'package:holybible/core/error/failure.dart';
-import 'package:holybible/features/data/datasources/chapter_datasource.dart';
+import 'package:holybible/features/data/datasources/chapter_datasource_repo.dart';
 import 'package:holybible/features/domain/entities/chapter_entity.dart';
 import 'package:holybible/features/domain/repositories/chapter_repo.dart';
 

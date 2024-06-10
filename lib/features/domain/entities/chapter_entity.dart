@@ -1,11 +1,15 @@
+import 'package:equatable/equatable.dart';
 import 'package:holybible/features/domain/entities/verse_entity.dart';
 
-class ChapterEntity {
+class ChapterEntity extends Equatable {
   final int chapter;
   final List<VerseEntity> verses;
 
-  ChapterEntity({
+  const ChapterEntity({
     required this.chapter,
     required this.verses,
   });
+
+  @override
+  List<Object> get props => [chapter, verses];
 }

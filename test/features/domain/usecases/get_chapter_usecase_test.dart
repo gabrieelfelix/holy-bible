@@ -18,7 +18,7 @@ void main() {
     usecase = GetChapterUsecase(repository: repository);
   });
 
-  final tChapterEntity = ChapterEntity(
+  const tChapterEntity = ChapterEntity(
     chapter: 23,
     verses: [
       VerseEntity(
@@ -52,11 +52,11 @@ void main() {
   group("verify get chapter domain", () {
     test('should get chapter from book', () async {
       when(() => repository.getChapter())
-          .thenAnswer((_) async => Right(tChapterEntity));
+          .thenAnswer((_) async => const Right(tChapterEntity));
 
       final response = await usecase(tNoParams);
 
-      expect(response, Right(tChapterEntity));
+      expect(response, const Right(tChapterEntity));
       verify(() => repository.getChapter()).called(1);
     });
   });

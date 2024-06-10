@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:holybible/core/error/exception.dart';
 import 'package:holybible/core/error/failure.dart';
-import 'package:holybible/features/data/datasources/chapter_datasource.dart';
+import 'package:holybible/features/data/datasources/chapter_datasource_repo.dart';
 import 'package:holybible/features/data/models/chapter_model.dart';
 import 'package:holybible/features/data/models/verse_model.dart';
 import 'package:holybible/features/data/repositories/chapter_repository.dart';
@@ -19,7 +19,7 @@ void main() {
     repository = ChapterRepository(dataSource: dataSource);
   });
 
-  final tChapterModel = ChapterModel(
+  const tChapterModel = ChapterModel(
     chapter: 23,
     verses: [
       VerseModel(
@@ -57,7 +57,7 @@ void main() {
       //act
       final response = await repository.getChapter();
       //assert
-      expect(response, Right(tChapterModel));
+      expect(response, const Right(tChapterModel));
       verify(() => dataSource.getChapter()).called(1);
     });
 
