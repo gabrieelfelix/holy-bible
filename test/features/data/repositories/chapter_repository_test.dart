@@ -20,6 +20,7 @@ void main() {
   });
 
   const tChapterModel = ChapterModel(
+    name: 'Salmos',
     chapter: 23,
     verses: [
       VerseModel(

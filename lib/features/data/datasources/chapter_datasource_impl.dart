@@ -13,7 +13,7 @@ class ChapterDataSource implements IChapterDataSource {
   @override
   Future<ChapterModel> getChapter() async {
     final response = await client.get(
-        url: AbibliadigitalEndpoints.chapter(abrevBook: 'sl', chapter: 1));
+        url: AbibliadigitalEndpoints.chapter(abrevBook: 'gn', chapter: 1));
     if (response.statusCode == 200) {
       return ChapterModel.fromJson(jsonDecode(response.data));
     } else {

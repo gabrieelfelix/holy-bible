@@ -15,8 +15,8 @@ class ChapterRepository implements IChapterRepository {
     try {
       final response = await dataSource.getChapter();
       return Right(response);
-    } on ServerException {
-      return Left(FailureTest());
+    } on ServerException catch (e) {
+      return Left(GetChapterFailure(message: e.toString()));
     }
   }
 }
