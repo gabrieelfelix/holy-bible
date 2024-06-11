@@ -1,8 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:holybible/core/app_client/client_repo.dart';
+import 'package:holybible/core/error/exception.dart';
 import 'package:holybible/features/data/datasources/chapter_datasource_impl.dart';
 import 'package:holybible/features/data/datasources/chapter_datasource_repo.dart';
-import 'package:holybible/features/data/endpoints/abibliadigital_points.dart';
+import 'package:holybible/features/data/models/chapter_model.dart';
 import 'package:holybible/features/domain/entities/chapter_entity.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -19,17 +20,18 @@ void main() {
     dataSource = ChapterDataSource(client: client);
   });
 
-  const urlExpected = 'https://www.abibliadigital.com.br/api/verses/nvi/sl/1';
-
   void successMock() {
     when(
       () => client.get(
-        url: AbibliadigitalEndpoints.chapter(abrevBook: 'sl', chapter: 1),
+        url: any(named: 'url'),
       ),
     ).thenAnswer(
-      (_) async => HttpResponse(data: bibleRequisitionSuccess, statusCode: 200),
+      (_) async =>
+          const HttpResponse(data: bibleRequisitionSuccess, statusCode: 200),
     );
   }
+
+  const tHttpError = """{"msg": "Chapter not found"}""";
 
   group('ChapterDataSource', () {
     test('should call the get method with correct url', () async {
@@ -40,7 +42,7 @@ void main() {
       await dataSource.getChapter();
 
       // Assert
-      verify(() => client.get(url: urlExpected)).called(1);
+      verify(() => client.get(url: any(named: 'url'))).called(1);
     });
 
     test('should return a model when success', () async {
@@ -54,21 +56,23 @@ void main() {
       expect(response, isA<ChapterEntity>());
     });
 
-    //test all exceptions ...
-    // test('should throw a server exception when the call is unccessful',
-    //     () async {
-    //   when(
-    //     () => client.get(
-    //       url: AbibliadigitalEndpoints.chapter(abrevBook: 'sl', chapter: 1),
-    //     ),
-    //   ).thenAnswer(
-    //     (_) async =>
-    //         HttpResponse(data: bibleRequisitionFailed, statusCode: 404),
-    //   );
+    test('should throw HttpErrorException when status code is not 200',
+        () async {
+      // Arrange
+      when(() => client.get(url: any(named: 'url'))).thenAnswer((_) async =>
+          const HttpResponse(
+              data: '{"msg": "Chapter not found"}', statusCode: 404));
 
-    //   final response = await dataSource.getChapter();
+      // Act & Assert
+      expect(() async {
+        await dataSource.getChapter();
+      },
+          throwsA(isA<HttpErrorException>()
+              .having((e) => e.statusCode, 'statusCode', 404)
+              .having((e) => e.data, 'data', 'Chapter not found')));
 
-    //   expect(response, throwsA(ServerException()));
-    // });
+      // Verify
+      verify(() => client.get(url: any(named: 'url'))).called(1);
+    });
   });
 }

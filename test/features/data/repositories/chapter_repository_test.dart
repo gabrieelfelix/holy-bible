@@ -12,8 +12,8 @@ import 'package:mocktail/mocktail.dart';
 class MockChapterDataSource extends Mock implements IChapterDataSource {}
 
 void main() {
-  late ChapterRepository repository;
   late IChapterDataSource dataSource;
+  late ChapterRepository repository;
   setUp(() {
     dataSource = MockChapterDataSource();
     repository = ChapterRepository(dataSource: dataSource);
@@ -62,14 +62,39 @@ void main() {
       verify(() => dataSource.getChapter()).called(1);
     });
 
-    test("should return a error when calls the data source", () async {
+    test("should return a server exception error when calls the data source",
+        () async {
       //arrange
-      when(() => dataSource.getChapter()).thenThrow(ServerException());
+      when(() => dataSource.getChapter()).thenThrow(const ServerException());
 
       //act
       final response = await repository.getChapter();
       //assert
-      expect(response, equals(Left<Failure, ChapterEntity>(FailureTest())));
+      expect(
+          response,
+          equals(const Left<Failure, ChapterEntity>(
+              GetChapterFailure(message: 'Ocorreu um erro no servidor.'))));
+      verify(() => dataSource.getChapter()).called(1);
+    });
+
+    test('should return a http exception error when calls the data source',
+        () async {
+      //arrange
+      when(() => dataSource.getChapter()).thenThrow(
+          const HttpErrorException(data: "Chapter not found", statusCode: 404));
+
+      //act
+      final response = await repository.getChapter();
+
+      //assert
+      expect(
+        response,
+        equals(
+          const Left<Failure, ChapterEntity>(
+            GetChapterFailure(message: 'Chapter not found'),
+          ),
+        ),
+      );
       verify(() => dataSource.getChapter()).called(1);
     });
   });
