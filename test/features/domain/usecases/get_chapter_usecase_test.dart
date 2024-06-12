@@ -19,6 +19,7 @@ void main() {
   });
 
   const tChapterEntity = ChapterEntity(
+    name: 'Salmos',
     chapter: 23,
     verses: [
       VerseEntity(
